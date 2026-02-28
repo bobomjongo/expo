@@ -62,7 +62,7 @@ public class AudioPlayer: SharedRef<AVPlayer> {
   }
 
   var isBuffering: Bool {
-    playerIsBuffering()
+    ref.isBuffering(isPlaying: isPlaying)
   }
 
   func play(at rate: Float) {
@@ -285,21 +285,6 @@ public class AudioPlayer: SharedRef<AVPlayer> {
       guard let self, shouldResume else { return }
       self.play(at: rate)
     }
-  }
-
-  private func playerIsBuffering() -> Bool {
-    if isPlaying {
-      return false
-    }
-
-    if ref.timeControlStatus == .waitingToPlayAtSpecifiedRate {
-      return true
-    }
-
-    if let currentItem = ref.currentItem {
-      return !currentItem.isPlaybackLikelyToKeepUp && currentItem.isPlaybackBufferEmpty
-    }
-    return true
   }
 
   private func installTap() {

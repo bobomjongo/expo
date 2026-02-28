@@ -55,11 +55,10 @@ class MediaController {
       if let artworkUrl = userMetadata.artworkUrl {
         if currentArtworkUrl != artworkUrl {
           currentArtworkUrl = artworkUrl
-        } else {
-          if let cachedArtwork {
-            nowPlayingInfo[MPMediaItemPropertyArtwork] = cachedArtwork
-            self.nowPlayingInfoCenter.nowPlayingInfo = nowPlayingInfo
-          }
+        } else if let cachedArtwork {
+          nowPlayingInfo[MPMediaItemPropertyArtwork] = cachedArtwork
+          self.nowPlayingInfoCenter.nowPlayingInfo = nowPlayingInfo
+          return
         }
         loadArtworkFromURL(url: artworkUrl) { [weak self] artwork in
           if let artwork {
