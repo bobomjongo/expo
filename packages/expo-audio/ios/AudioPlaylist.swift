@@ -357,3 +357,14 @@ public class AudioPlaylist: SharedRef<AVQueuePlayer> {
     ref.removeAllItems()
   }
 }
+
+extension AudioPlaylist: Playable {
+  var volume: Float {
+    get { ref.volume }
+    set { ref.volume = newValue }
+  }
+
+  func resumePlayback() {
+    play(at: currentRate)
+  }
+}

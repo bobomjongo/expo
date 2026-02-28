@@ -399,3 +399,18 @@ public class AudioPlayer: SharedRef<AVPlayer> {
     audioProcessor = nil
   }
 }
+
+extension AudioPlayer: Playable {
+  var volume: Float {
+    get { ref.volume }
+    set { ref.volume = newValue }
+  }
+
+  func pause() {
+    ref.pause()
+  }
+
+  func resumePlayback() {
+    ref.play()
+  }
+}
