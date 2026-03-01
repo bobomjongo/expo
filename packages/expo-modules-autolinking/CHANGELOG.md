@@ -6,6 +6,8 @@
 
 ### 🎉 New features
 
+- Support for podspec-free local modules that are included in the project's target using `PBXFileSystemSynchronizedRootGroup`.
+
 ### 🐛 Bug fixes
 
 ### 💡 Others
