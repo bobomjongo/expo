@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EMERSØN — The Pink Biscuit Experience</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Caveat:wght@400;600;700&family=Space+Mono:ital@0;1&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink:#f4a7c3;--hot:#e8619a;--lilac:#c9a8e8;--deep-lilac:#7b4fa6;
+  --lav:#e2d0f5;--acid:#b6f0a0;--gold:#f0d060;--sky:#a8c8f7;
+  --cream:#fdf4ff;--void:#100820;--void2:#1a0e35;
+  --cb:rgba(255,255,255,0.04);--br:rgba(201,168,232,0.2);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--void);color:var(--cream);font-family:'Syne',sans-serif;overflow-x:hidden;cursor:none;}
+
+#cursor{width:18px;height:18px;border-radius:50%;background:var(--pink);position:fixed;top:0;left:0;pointer-events:none;z-index:9999;mix-blend-mode:difference;transform:translate(-50%,-50%);transition:width .2s,height .2s;}
+#ctrail{width:7px;height:7px;border-radius:50%;background:var(--lilac);position:fixed;top:0;left:0;pointer-events:none;z-index:9998;opacity:.5;transform:translate(-50%,-50%);transition:transform .35s ease;}
+
+.orb{position:fixed;border-radius:50%;filter:blur(90px);opacity:.15;pointer-events:none;z-index:0;animation:drift 22s infinite alternate ease-in-out;}
+.o1{width:600px;height:600px;background:var(--lilac);top:-150px;left:-150px;}
+.o2{width:450px;height:450px;background:var(--hot);top:40%;right:-150px;animation-delay:-8s;}
+.o3{width:350px;height:350px;background:var(--acid);bottom:5%;left:15%;animation-delay:-16s;}
+.o4{width:280px;height:280px;background:var(--sky);top:30%;left:35%;animation-delay:-5s;opacity:.08;}
+@keyframes drift{0%{transform:translate(0,0) scale(1)}100%{transform:translate(50px,70px) scale(1.15)}}
+
+#ptx{position:fixed;inset:0;pointer-events:none;z-index:0;}
+
+nav{position:fixed;top:0;width:100%;z-index:1000;padding:16px 50px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(16px);background:rgba(16,8,32,.55);border-bottom:1px solid var(--br);}
+.nav-brand{display:flex;flex-direction:column;gap:2px;text-decoration:none;}
+.nav-artist{font-family:'Syne',sans-serif;font-weight:800;font-size:1.05rem;color:var(--cream);letter-spacing:5px;text-transform:uppercase;}
+.nav-sub{font-family:'Caveat',cursive;font-size:.75rem;color:var(--lilac);letter-spacing:2px;}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{font-family:'Space Mono',monospace;font-size:.58rem;color:var(--lav);text-decoration:none;letter-spacing:3px;text-transform:uppercase;transition:color .3s,letter-spacing .3s;}
+.nav-links a:hover{color:var(--pink);letter-spacing:5px;}
+
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;z-index:1;padding:120px 40px 100px;}
+.hero-eyebrow{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:7px;color:var(--lilac);text-transform:uppercase;margin-bottom:18px;opacity:0;animation:fadeUp 1s .3s forwards;}
+.hero-name{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1rem,3.5vw,1.8rem);letter-spacing:14px;text-transform:uppercase;color:var(--pink);margin-bottom:10px;opacity:0;animation:fadeUp 1s .5s forwards;}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(3.2rem,9vw,8.5rem);font-weight:900;line-height:.88;background:linear-gradient(130deg,var(--pink) 0%,var(--lilac) 35%,var(--gold) 65%,var(--hot) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:22px;opacity:0;animation:fadeUp 1s .7s forwards;}
+.hero-title em{font-style:italic;}
+.hero-tag{font-family:'Caveat',cursive;font-size:clamp(1rem,2.2vw,1.4rem);color:var(--lilac);margin-bottom:10px;opacity:0;animation:fadeUp 1s .9s forwards;}
+.hero-label2{font-family:'Space Mono',monospace;font-size:.5rem;letter-spacing:5px;color:rgba(201,168,232,.45);text-transform:uppercase;margin-bottom:50px;opacity:0;animation:fadeUp 1s 1.1s forwards;}
+.hero-cta{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;opacity:0;animation:fadeUp 1s 1.3s forwards;}
+
+.btn{padding:12px 28px;border-radius:100px;font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;text-decoration:none;transition:all .3s;cursor:none;border:none;display:inline-block;}
+.btn-pink{background:linear-gradient(135deg,var(--hot),var(--deep-lilac));color:#fff;box-shadow:0 0 28px rgba(232,97,154,.35);}
+.btn-pink:hover{transform:scale(1.05);box-shadow:0 0 48px rgba(232,97,154,.6);}
+.btn-ghost{background:transparent;color:var(--pink);border:1px solid var(--pink);}
+.btn-ghost:hover{background:rgba(247,168,196,.1);transform:scale(1.04);}
+
+section{position:relative;z-index:1;padding:100px 60px;}
+.s-label{font-family:'Space Mono',monospace;font-size:.56rem;letter-spacing:7px;color:var(--lilac);text-transform:uppercase;margin-bottom:10px;display:block;}
+.s-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4.5vw,3.6rem);font-weight:700;color:var(--cream);margin-bottom:55px;}
+.s-title em{font-style:italic;color:var(--pink);}
+.divider{width:calc(100% - 120px);height:1px;margin:0 60px;background:linear-gradient(90deg,transparent,var(--lilac),transparent);opacity:.22;}
+.reveal{opacity:0;transform:translateY(38px);transition:opacity .8s,transform .8s;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* PLAYER BAR */
+#player-bar{position:fixed;bottom:0;left:0;right:0;z-index:900;background:rgba(16,8,32,.96);backdrop-filter:blur(24px);border-top:1px solid var(--br);padding:13px 40px;display:flex;align-items:center;gap:22px;flex-wrap:wrap;}
+.p-info{display:flex;flex-direction:column;min-width:170px;}
+.p-ep{font-family:'Space Mono',monospace;font-size:.48rem;letter-spacing:4px;text-transform:uppercase;color:var(--lilac);margin-bottom:2px;}
+.p-name{font-family:'Playfair Display',serif;font-style:italic;font-size:.95rem;color:var(--cream);}
+.p-ctrls{display:flex;align-items:center;gap:14px;}
+.cbtn{background:none;border:none;color:var(--lav);font-size:1rem;cursor:none;transition:color .2s,transform .2s;padding:4px;}
+.cbtn:hover{color:var(--pink);transform:scale(1.18);}
+.playbtn{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--hot),var(--deep-lilac));border:none;color:#fff;font-size:.95rem;cursor:none;display:flex;align-items:center;justify-content:center;transition:transform .2s,box-shadow .2s;box-shadow:0 0 18px rgba(232,97,154,.4);}
+.playbtn:hover{transform:scale(1.1);box-shadow:0 0 32px rgba(232,97,154,.65);}
+.p-prog-wrap{flex:1;min-width:150px;}
+.p-prog{width:100%;height:4px;border-radius:2px;background:rgba(255,255,255,.1);cursor:pointer;-webkit-appearance:none;appearance:none;}
+.p-prog::-webkit-slider-thumb{-webkit-appearance:none;width:11px;height:11px;border-radius:50%;background:var(--pink);cursor:pointer;margin-top:-3.5px;}
+.p-prog::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:linear-gradient(to right,var(--pink) var(--pv,0%),rgba(255,255,255,.12) var(--pv,0%));}
+.p-time{font-family:'Space Mono',monospace;font-size:.52rem;color:var(--lilac);display:flex;justify-content:space-between;margin-top:3px;}
+.p-vol-wrap{display:flex;align-items:center;gap:7px;}
+.p-vol-icon{font-size:.8rem;color:var(--lilac);}
+.p-vol{width:68px;height:3px;border-radius:2px;background:rgba(255,255,255,.12);cursor:pointer;-webkit-appearance:none;appearance:none;}
+.p-vol::-webkit-slider-thumb{-webkit-appearance:none;width:9px;height:9px;border-radius:50%;background:var(--lilac);cursor:pointer;margin-top:-3px;}
+.ep-player-wrap{
+  margin-top:28px;
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--br);
+  border-radius:26px;
+  padding:24px;
+  position:relative;
+}
+.ep-player-label{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:16px;
+}
+.ep-player-label-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--pink);
+  box-shadow:0 0 8px var(--pink);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.ep-player-label-text{
+  font-family:'Space Mono',monospace;font-size:.55rem;
+  letter-spacing:4px;text-transform:uppercase;color:var(--lilac);
+}
+.ep-player-label-coming{
+  font-family:'Caveat',cursive;font-size:.9rem;
+  color:rgba(201,168,232,.5);margin-left:auto;font-style:italic;
+}
+.ep-embed{
+  border-radius:18px;overflow:hidden;
+  box-shadow:0 8px 40px rgba(0,0,0,.4);
+}
+.ep-embed iframe{display:block;}
+
+/* EPs */
+#music{background:radial-gradient(ellipse at top left,rgba(201,168,232,.07) 0%,transparent 60%);}
+.eps-cont{display:flex;flex-direction:column;gap:72px;}
+.ep-block{}
+.ep-hdr{display:flex;align-items:flex-end;gap:20px;margin-bottom:30px;border-bottom:1px solid var(--br);padding-bottom:18px;}
+.ep-num{font-family:'Playfair Display',serif;font-style:italic;font-size:4.5rem;font-weight:900;line-height:1;opacity:.1;color:var(--pink);position:relative;top:8px;}
+.ep-meta{display:flex;flex-direction:column;gap:3px;}
+.ep-vol{font-family:'Space Mono',monospace;font-size:.5rem;letter-spacing:5px;text-transform:uppercase;color:var(--lilac);}
+.ep-name{font-family:'Playfair Display',serif;font-weight:900;font-style:italic;font-size:clamp(2rem,4.5vw,3.2rem);color:var(--cream);line-height:1;}
+.ep-desc{font-family:'Caveat',cursive;font-size:.95rem;color:rgba(224,208,245,.6);margin-top:4px;}
+.ep-badge{margin-left:auto;font-family:'Space Mono',monospace;font-size:.48rem;letter-spacing:3px;padding:5px 14px;border-radius:100px;text-transform:uppercase;white-space:nowrap;align-self:center;}
+.b-live{background:rgba(182,240,160,.12);color:var(--acid);border:1px solid rgba(182,240,160,.28);}
+.b-soon{background:rgba(232,97,154,.12);color:var(--hot);border:1px solid rgba(232,97,154,.28);}
+.b-later{background:rgba(201,168,232,.08);color:var(--lilac);border:1px solid var(--br);}
+.tracklist{display:flex;flex-direction:column;}
+.trow{display:flex;align-items:center;gap:18px;padding:16px 18px;border-radius:13px;cursor:none;transition:background .3s,transform .2s;position:relative;}
+.trow:hover{background:rgba(255,255,255,.05);transform:translateX(5px);}
+.trow.playing{background:rgba(247,168,196,.07);}
+.trow.playing .tname{color:var(--pink);}
+.tnum{font-family:'Space Mono',monospace;font-size:.58rem;color:rgba(201,168,232,.4);width:20px;text-align:center;flex-shrink:0;}
+.trow.playing .tnum{display:none;}
+.tpicon{width:30px;height:30px;border-radius:50%;background:rgba(247,168,196,.1);border:1px solid rgba(247,168,196,.2);display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;transition:all .3s;}
+.trow:hover .tpicon,.trow.playing .tpicon{background:var(--hot);border-color:var(--hot);color:#fff;}
+.tname{font-family:'Playfair Display',serif;font-style:italic;font-size:1.05rem;color:var(--cream);flex:1;}
+.tmeta{font-family:'Caveat',cursive;font-size:.82rem;color:rgba(201,168,232,.45);}
+.eq{display:none;gap:2px;align-items:flex-end;height:15px;flex-shrink:0;}
+.trow.playing .eq{display:flex;}
+.eqb{width:3px;border-radius:1px;background:var(--pink);animation:eqB .6s ease-in-out infinite alternate;}
+.eqb:nth-child(2){animation-delay:.15s;}
+.eqb:nth-child(3){animation-delay:.3s;}
+.eqb:nth-child(4){animation-delay:.1s;}
+@keyframes eqB{0%{height:4px;opacity:.5}100%{height:15px;opacity:1}}
+
+/* ORACLE */
+#interactive{background:radial-gradient(ellipse at center,rgba(182,240,160,.04) 0%,transparent 70%);}
+.oracle-wrap{background:var(--cb);border:1px solid var(--br);border-radius:26px;padding:48px;text-align:center;max-width:660px;margin:0 auto;}
+.o-title{font-family:'Caveat',cursive;font-size:1.85rem;color:var(--lilac);margin-bottom:5px;}
+.o-sub{font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:5px;color:var(--pink);text-transform:uppercase;margin-bottom:32px;}
+.o-q{font-family:'Playfair Display',serif;font-style:italic;font-size:1.35rem;color:var(--cream);min-height:58px;margin-bottom:26px;transition:opacity .4s;}
+.o-opts{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:22px;}
+.obtn{padding:15px 16px;border-radius:13px;border:1px solid rgba(201,168,232,.22);background:rgba(255,255,255,.03);color:var(--lav);font-family:'Caveat',cursive;font-size:1.05rem;cursor:none;transition:all .3s;text-align:left;}
+.obtn:hover{background:rgba(201,168,232,.1);border-color:var(--lilac);color:var(--cream);transform:scale(1.02);}
+.o-prog{display:flex;gap:8px;justify-content:center;margin-bottom:26px;}
+.odot{width:8px;height:8px;border-radius:50%;background:rgba(201,168,232,.22);transition:background .3s;}
+.odot.done{background:var(--pink);}
+.o-result{display:none;background:linear-gradient(135deg,rgba(247,168,196,.07),rgba(201,168,232,.07));border:1px solid rgba(247,168,196,.22);border-radius:17px;padding:26px;margin-top:14px;}
+.o-result.show{display:block;animation:fadeUp .6s forwards;}
+.res-em{font-size:2.6rem;margin-bottom:8px;}
+.res-ep{font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:5px;text-transform:uppercase;color:var(--lilac);margin-bottom:5px;}
+.res-title{font-family:'Playfair Display',serif;font-style:italic;font-size:1.6rem;color:var(--pink);margin-bottom:9px;}
+.res-desc{font-family:'Caveat',cursive;font-size:1rem;color:var(--lilac);line-height:1.7;margin-bottom:14px;}
+
+/* JOURNAL */
+#journal{background:radial-gradient(ellipse at bottom right,rgba(247,168,196,.06) 0%,transparent 60%);}
+.jgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:22px;}
+.jcard{background:var(--cb);border:1px solid rgba(247,168,196,.16);border-radius:19px;padding:30px;cursor:none;transition:all .4s;position:relative;overflow:hidden;}
+.jcard::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(to bottom,var(--pink),var(--lilac));}
+.jcard:hover{transform:translateY(-5px);border-color:rgba(247,168,196,.42);background:rgba(255,255,255,.055);box-shadow:0 18px 48px rgba(201,168,232,.1);}
+.jc-type{position:absolute;top:14px;right:16px;font-size:1.1rem;opacity:.45;}
+.jc-mood{font-size:1.5rem;margin-bottom:9px;display:block;}
+.jc-date{font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:3px;color:var(--lilac);margin-bottom:9px;display:block;}
+.jc-title{font-family:'Playfair Display',serif;font-style:italic;font-size:1.15rem;color:var(--cream);margin-bottom:11px;line-height:1.3;}
+.jc-exc{font-family:'Caveat',cursive;font-size:.97rem;color:rgba(232,213,245,.62);line-height:1.7;margin-bottom:14px;}
+.jc-tag{font-family:'Space Mono',monospace;font-size:.5rem;letter-spacing:3px;padding:4px 11px;border-radius:100px;background:rgba(201,168,232,.1);color:var(--lilac);text-transform:uppercase;display:inline-block;}
+
+/* MODAL */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(16,8,32,.93);backdrop-filter:blur(20px);z-index:2000;align-items:center;justify-content:center;padding:40px;}
+.modal-ov.open{display:flex;animation:fadeIn .3s forwards;}
+.mbox{background:linear-gradient(135deg,rgba(26,14,53,.97),rgba(50,25,80,.97));border:1px solid rgba(201,168,232,.28);border-radius:26px;padding:46px;max-width:620px;width:100%;position:relative;animation:fadeUp .4s forwards;max-height:82vh;overflow-y:auto;}
+.mclose{position:absolute;top:18px;right:22px;background:none;border:none;color:var(--lilac);font-size:1.35rem;cursor:none;transition:color .3s;}
+.mclose:hover{color:var(--pink);}
+.m-date{font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:4px;color:var(--lilac);margin-bottom:16px;display:block;text-transform:uppercase;}
+.m-badge{display:inline-block;margin-bottom:18px;font-family:'Space Mono',monospace;font-size:.48rem;letter-spacing:3px;padding:4px 13px;border-radius:100px;text-transform:uppercase;}
+.bp{background:rgba(247,168,196,.1);color:var(--pink);border:1px solid rgba(247,168,196,.28);}
+.bi{background:rgba(182,240,160,.1);color:var(--acid);border:1px solid rgba(182,240,160,.28);}
+.bw{background:rgba(201,168,232,.1);color:var(--lilac);border:1px solid var(--br);}
+.m-title{font-family:'Playfair Display',serif;font-style:italic;font-size:1.85rem;color:var(--pink);margin-bottom:20px;line-height:1.22;}
+.m-img{width:100%;aspect-ratio:4/3;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:4rem;margin-bottom:14px;background:linear-gradient(135deg,rgba(247,168,196,.12),rgba(201,168,232,.12));border:1px dashed rgba(201,168,232,.25);}
+.m-img-sub{font-family:'Space Mono',monospace;font-size:.48rem;letter-spacing:3px;color:rgba(201,168,232,.45);text-align:center;margin-bottom:18px;text-transform:uppercase;}
+.m-body{font-family:'Caveat',cursive;font-size:1.08rem;color:var(--lav);line-height:1.9;}
+.m-body p{margin-bottom:15px;}
+
+/* MERCH */
+#merch{background:radial-gradient(ellipse at top right,rgba(232,97,154,.06) 0%,transparent 60%);}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:20px;}
+.mcard{background:var(--cb);border:1px solid rgba(247,168,196,.16);border-radius:17px;overflow:hidden;cursor:none;transition:all .4s;}
+.mcard:hover{transform:translateY(-5px);box-shadow:0 18px 48px rgba(232,97,154,.16);border-color:rgba(247,168,196,.42);}
+.mimg{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:3.3rem;position:relative;}
+.mi1{background:linear-gradient(135deg,#f4a7c3,#e2d0f5);}
+.mi2{background:linear-gradient(135deg,#c9a8e8,#b6f0a0);}
+.mi3{background:linear-gradient(135deg,#100820,#e8619a);}
+.mi4{background:linear-gradient(135deg,#f0d060,#f4a7c3);}
+.mi5{background:linear-gradient(135deg,#a8c8f7,#c9a8e8);}
+.mi6{background:linear-gradient(135deg,#b6f0a0,#f4a7c3,#c9a8e8);}
+.mbadge{position:absolute;top:11px;right:11px;font-family:'Space Mono',monospace;font-size:.46rem;letter-spacing:2px;padding:3px 9px;border-radius:100px;background:rgba(16,8,32,.82);color:var(--gold);text-transform:uppercase;}
+.minfo{padding:16px;}
+.mname{font-family:'Playfair Display',serif;font-size:1rem;color:var(--cream);margin-bottom:4px;}
+.mprice{font-family:'Space Mono',monospace;font-size:.78rem;color:var(--pink);margin-bottom:11px;}
+.madd{display:block;width:100%;padding:9px;border-radius:100px;background:rgba(247,168,196,.07);border:1px solid rgba(247,168,196,.22);color:var(--pink);font-family:'Space Mono',monospace;font-size:.52rem;letter-spacing:3px;text-transform:uppercase;cursor:none;transition:all .3s;text-align:center;}
+.madd:hover{background:rgba(247,168,196,.17);border-color:var(--pink);color:var(--cream);}
+
+footer{position:relative;z-index:1;padding:56px 60px 130px;border-top:1px solid var(--br);display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:36px;}
+.fb .fa{font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:5px;color:var(--pink);text-transform:uppercase;}
+.fb .fe{font-family:'Caveat',cursive;font-size:.95rem;color:var(--lilac);}
+.fb .fl{font-family:'Space Mono',monospace;font-size:.47rem;letter-spacing:3px;color:rgba(201,168,232,.38);margin-top:5px;text-transform:uppercase;}
+.fc{text-align:center;font-family:'Playfair Display',serif;font-style:italic;font-size:1.9rem;color:var(--cream);}
+.fr{text-align:right;display:flex;flex-direction:column;gap:9px;align-items:flex-end;}
+.fr a{font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:3px;color:var(--lilac);text-decoration:none;text-transform:uppercase;transition:color .3s;}
+.fr a:hover{color:var(--pink);}
+.fcopy{grid-column:1/-1;text-align:center;font-family:'Space Mono',monospace;font-size:.48rem;color:rgba(201,168,232,.28);letter-spacing:3px;margin-top:16px;text-transform:uppercase;}
+
+.toast{position:fixed;bottom:95px;left:50%;transform:translateX(-50%) translateY(18px);opacity:0;background:rgba(26,14,53,.96);border:1px solid rgba(201,168,232,.32);color:var(--lav);font-family:'Caveat',cursive;font-size:.98rem;padding:11px 24px;border-radius:100px;z-index:3000;transition:transform .4s,opacity .4s;backdrop-filter:blur(20px);pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+@media(max-width:768px){
+  nav{padding:13px 18px;}
+  .nav-links{gap:12px;}
+  .nav-links a{font-size:.52rem;letter-spacing:2px;}
+  section{padding:65px 20px;}
+  .ep-hdr{flex-wrap:wrap;}
+  footer{grid-template-columns:1fr;text-align:center;padding-bottom:130px;}
+  .fr{align-items:center;text-align:center;}
+  #player-bar{padding:11px 16px;gap:12px;}
+  .p-info{min-width:110px;}
+  .o-opts{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="ctrail"></div>
+<canvas id="ptx"></canvas>
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+<div class="orb o3"></div>
+<div class="orb o4"></div>
+
+<!-- JOURNAL MODAL -->
+<div class="modal-ov" id="jModal" onclick="closeModal(event)">
+  <div class="mbox">
+    <button class="mclose" onclick="document.getElementById('jModal').classList.remove('open')">✕</button>
+    <span class="m-date" id="mDate"></span>
+    <span class="m-badge" id="mBadge"></span>
+    <div class="m-title" id="mTitle"></div>
+    <div id="mImgWrap" style="display:none">
+      <div class="m-img" id="mImg"></div>
+      <div class="m-img-sub" id="mSub"></div>
+    </div>
+    <div class="m-body" id="mBody"></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-brand">
+    <span class="nav-artist">EMERSØN</span>
+    <span class="nav-sub">✦ the pink biscuit experience</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#music">Music</a></li>
+    <li><a href="#interactive">Oracle</a></li>
+    <li><a href="#journal">Journal</a></li>
+    <li><a href="#merch">Merch</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <p class="hero-eyebrow">✦ Voidflower Recordings · Hermit &amp; Baker Co. ✦</p>
+  <p class="hero-name">EMERSØN</p>
+  <h1 class="hero-title">The Pink<br><em>Biscuit</em><br>Experience</h1>
+  <p class="hero-tag">~ futuristic psychedelic · funk · afro r&amp;b ~</p>
+  <p class="hero-label2">Three EPs · Bloom · Flourish · Jam</p>
+  <div class="hero-cta">
+    <a href="#music" class="btn btn-pink">Listen Now</a>
+    <a href="#interactive" class="btn btn-ghost">Find Your Frequency</a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MUSIC -->
+<section id="music">
+  <div class="reveal">
+    <span class="s-label">✦ The trilogy</span>
+    <h2 class="s-title">The EP <em>Series</em></h2>
+  </div>
+  <div class="eps-cont">
+
+    <!-- BLOOM -->
+    <div class="ep-block reveal">
+      <div class="ep-hdr">
+        <div class="ep-num">I</div>
+        <div class="ep-meta">
+          <span class="ep-vol">Volume One</span>
+          <div class="ep-name">BLOOM</div>
+          <div class="ep-desc">Tender beginnings. Opening up. The first petal unfurling.</div>
+        </div>
+        <span class="ep-badge b-live">Out Now</span>
+      </div>
+      <div class="tracklist">
+        <div class="trow" onclick="playTrack(0)" data-idx="0">
+          <div class="eq"><div class="eqb"></div><div class="eqb"></div><div class="eqb"></div><div class="eqb"></div></div>
+          <span class="tnum">01</span>
+          <div class="tpicon">▶</div>
+          <div class="tname">Excusez Moi</div>
+          <div class="tmeta">BLOOM</div>
+        </div>
+        <div class="trow" onclick="playTrack(1)" data-idx="1">
+          <div class="eq"><div class="eqb"></div><div class="eqb"></div><div class="eqb"></div><div class="eqb"></div></div>
+          <span class="tnum">02</span>
+          <div class="tpicon">▶</div>
+          <div class="tname">Angelina</div>
+          <div class="tmeta">BLOOM</div>
+        </div>
+        <div class="trow" onclick="playTrack(2)" data-idx="2">
+          <div class="eq"><div class="eqb"></div><div class="eqb"></div><div class="eqb"></div><div class="eqb"></div></div>
+          <span class="tnum">03</span>
+          <div class="tpicon">▶</div>
+          <div class="tname">Love Is Coming For You</div>
+          <div class="tmeta">BLOOM</div>
+        </div>
+      </div>
+      <!-- BLOOM PLAYER -->
+      <div class="ep-player-wrap">
+        <div class="ep-player-label">
+          <div class="ep-player-label-dot"></div>
+          <span class="ep-player-label-text">▶ Stream BLOOM</span>
+        </div>
+        <div class="ep-embed">
+          <iframe style="border-radius:18px" src="https://untitled.stream/embed/sej6Tf2PyiwN" width="100%" height="344" allowfullscreen allow="picture-in-picture" frameborder="0" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- FLOURISH -->
+    <div class="ep-block reveal">
+      <div class="ep-hdr">
+        <div class="ep-num">II</div>
+        <div class="ep-meta">
+          <span class="ep-vol">Volume Two</span>
+          <div class="ep-name">FLOURISH</div>
+          <div class="ep-desc">Growth in full motion. Finding your rhythm. Becoming.</div>
+        </div>
+        <span class="ep-badge b-soon">Coming Soon</span>
+      </div>
+      <div class="tracklist">
+        <div class="trow" onclick="playTrack(3)" data-idx="3">
+          <div class="eq"><div class="eqb"></div><div class="eqb"></div><div class="eqb"></div><div class="eqb"></div></div>
+          <span class="tnum">01</span>
+          <div class="tpicon">▶</div>
+          <div class="tname">Go Come</div>
+          <div class="tmeta">FLOURISH</div>
+        </div>
+        <div class="trow" onclick="playTrack(4)" data-idx="4">
+          <div class="eq"><div class="eqb"></div><div class="eqb"></div><div class="eqb"></div><div class="eqb"></div></div>
+          <span class="tnum">02</span>
+          <div class="tpicon">▶</div>
+          <div class="tname">Overtime</div>
+          <div class="tmeta">FLOURISH</div>
+        </div>
+        <div class="trow" onclick="playTrack(5)" data-idx="5">
+          <div class="eq"><div class="eqb"></div><div class="eqb"></div><div class="eqb"></div><div class="eqb"></div></div>
+          <span class="tnum">03</span>
+          <div class="tpicon">▶</div>
+          <div class="tname">Abeni</div>
+          <div class="tmeta">FLOURISH</div>
+        </div>
+      </div>
+      <!-- FLOURISH PLAYER PLACEHOLDER -->
+      <div class="ep-player-wrap">
+        <div class="ep-player-label">
+          <div class="ep-player-label-dot" style="background:var(--hot);box-shadow:0 0 8px var(--hot)"></div>
+          <span class="ep-player-label-text">FLOURISH</span>
+          <span class="ep-player-label-coming">~ dropping soon, stay close ~</span>
+        </div>
+        <div style="padding:32px;text-align:center;border:1px dashed rgba(232,97,154,.25);border-radius:18px;">
+          <div style="font-size:2.5rem;margin-bottom:12px">🌿</div>
+          <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.2rem;color:var(--pink);margin-bottom:8px">Go Come · Overtime · Abeni</div>
+          <div style="font-family:'Caveat',cursive;font-size:1rem;color:rgba(201,168,232,.55)">The player will live here when FLOURISH drops.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JAM -->
+    <div class="ep-block reveal">
+      <div class="ep-hdr">
+        <div class="ep-num">III</div>
+        <div class="ep-meta">
+          <span class="ep-vol">Volume Three</span>
+          <div class="ep-name">JAM</div>
+          <div class="ep-desc">Pure joy, movement, release. This is what you've been building toward.</div>
+        </div>
+        <span class="ep-badge b-later">Later This Year</span>
+      </div>
+      <div class="tracklist">
+        <div class="trow" onclick="playTrack(6)" data-idx="6">
+          <div class="eq"><div class="eqb"></div><div class="eqb"></div><div class="eqb"></div><div class="eqb"></div></div>
+          <span class="tnum">01</span>
+          <div class="tpicon">▶</div>
+          <div class="tname">Get My Body</div>
+          <div class="tmeta">JAM</div>
+        </div>
+        <div class="trow" onclick="playTrack(7)" data-idx="7">
+          <div class="eq"><div class="eqb"></div><div class="eqb"></div><div class="eqb"></div><div class="eqb"></div></div>
+          <span class="tnum">02</span>
+          <div class="tpicon">▶</div>
+          <div class="tname">Good Summer</div>
+          <div class="tmeta">JAM</div>
+        </div>
+        <div class="trow" onclick="playTrack(8)" data-idx="8">
+          <div class="eq"><div class="eqb"></div><div class="eqb"></div><div class="eqb"></div><div class="eqb"></div></div>
+          <span class="tnum">03</span>
+          <div class="tpicon">▶</div>
+          <div class="tname">Joseline</div>
+          <div class="tmeta">JAM</div>
+        </div>
+      </div>
+      <!-- JAM PLAYER -->
+      <div class="ep-player-wrap">
+        <div class="ep-player-label">
+          <div class="ep-player-label-dot" style="background:var(--acid);box-shadow:0 0 8px var(--acid)"></div>
+          <span class="ep-player-label-text">▶ Stream JAM</span>
+        </div>
+        <div class="ep-embed">
+          <iframe style="border-radius:18px" src="https://untitled.stream/embed/0fCi7bwwOy0m" width="100%" height="344" allowfullscreen allow="picture-in-picture" frameborder="0" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ORACLE -->
+<section id="interactive">
+  <div class="reveal" style="text-align:center">
+    <span class="s-label">✦ The experience</span>
+    <h2 class="s-title">The Pink Biscuit <em>Mood Oracle</em></h2>
+  </div>
+  <div class="oracle-wrap reveal">
+    <div class="o-title">Which EP finds you?</div>
+    <div class="o-sub">✦ answer honestly ✦</div>
+    <div class="o-prog" id="oProg">
+      <div class="odot" id="od0"></div><div class="odot" id="od1"></div>
+      <div class="odot" id="od2"></div><div class="odot" id="od3"></div>
+    </div>
+    <div class="o-q" id="oQ">Close your eyes. What does right now feel like in your body?</div>
+    <div class="o-opts" id="oOpts">
+      <button class="obtn" onclick="oAns(0,'A')">🌱 Like something is about to open</button>
+      <button class="obtn" onclick="oAns(0,'B')">🔥 Like I'm running at full speed</button>
+      <button class="obtn" onclick="oAns(0,'C')">🌊 Still. Soft. Floating.</button>
+      <button class="obtn" onclick="oAns(0,'D')">🌸 Tender. A little raw.</button>
+    </div>
+    <div class="o-result" id="oRes">
+      <div class="res-em" id="rEm"></div>
+      <div class="res-ep" id="rEP"></div>
+      <div class="res-title" id="rT"></div>
+      <div class="res-desc" id="rD"></div>
+      <button class="btn btn-ghost" onclick="resetOracle()" style="font-size:.56rem;padding:10px 20px;margin-top:10px;">Try again ↺</button>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- JOURNAL -->
+<section id="journal">
+  <div class="reveal">
+    <span class="s-label">✦ Pages from the inside</span>
+    <h2 class="s-title">Photo Journal <em>&amp; Ideas</em></h2>
+  </div>
+  <div class="jgrid">
+    <div class="jcard reveal" onclick="openJ(0)">
+      <span class="jc-type">📸</span>
+      <span class="jc-mood">🌸</span>
+      <span class="jc-date">Studio Session — Jan 2025</span>
+      <div class="jc-title">"The room where BLOOM was born"</div>
+      <p class="jc-exc">Three candles, one microphone, and the feeling that something was listening back...</p>
+      <span class="jc-tag">✦ photo</span>
+    </div>
+    <div class="jcard reveal" style="transition-delay:.1s" onclick="openJ(1)">
+      <span class="jc-type">💡</span>
+      <span class="jc-mood">🌀</span>
+      <span class="jc-date">Voice Note — Nov 2024 · 2:47am</span>
+      <div class="jc-title">"What if the funk was the grief"</div>
+      <p class="jc-exc">What if the groove is the grief, sublimated. What if dancing is how you process what you can't say...</p>
+      <span class="jc-tag">✦ idea</span>
+    </div>
+    <div class="jcard reveal" style="transition-delay:.2s" onclick="openJ(2)">
+      <span class="jc-type">✍️</span>
+      <span class="jc-mood">🌙</span>
+      <span class="jc-date">Writing — Dec 2024 · midnight</span>
+      <div class="jc-title">"On naming songs after women"</div>
+      <p class="jc-exc">Angelina. Abeni. Joseline. There's something about putting a name in a song — it becomes a kind of prayer...</p>
+      <span class="jc-tag">✦ writing</span>
+    </div>
+    <div class="jcard reveal" style="transition-delay:.3s" onclick="openJ(3)">
+      <span class="jc-type">📸</span>
+      <span class="jc-mood">🎨</span>
+      <span class="jc-date">Visual Reference — Feb 2025</span>
+      <div class="jc-title">"Mood board for FLOURISH"</div>
+      <p class="jc-exc">Fractals, bougainvillea in Lagos light, the feeling of a Friday at 6pm when everything is still possible...</p>
+      <span class="jc-tag">✦ photo</span>
+    </div>
+    <div class="jcard reveal" style="transition-delay:.4s" onclick="openJ(4)">
+      <span class="jc-type">💡</span>
+      <span class="jc-mood">✨</span>
+      <span class="jc-date">Concept Note — Jan 2025</span>
+      <div class="jc-title">"The biscuit as metaphor"</div>
+      <p class="jc-exc">Something that crumbles when you hold too tight. Something that's best shared. Something that surprises you with warmth...</p>
+      <span class="jc-tag">✦ idea</span>
+    </div>
+    <div class="jcard reveal" style="transition-delay:.5s" onclick="openJ(5)">
+      <span class="jc-type">✍️</span>
+      <span class="jc-mood">🔥</span>
+      <span class="jc-date">Writing — Mar 2025</span>
+      <div class="jc-title">"What JAM means to me"</div>
+      <p class="jc-exc">JAM is the version of you that stopped asking for permission to take up space. The final EP is a celebration...</p>
+      <span class="jc-tag">✦ writing</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MERCH -->
+<section id="merch">
+  <div class="reveal">
+    <span class="s-label">✦ Wear the frequency</span>
+    <h2 class="s-title">The <em>Shop</em></h2>
+  </div>
+  <div class="mgrid">
+    <div class="mcard reveal" onclick="showToast('Added to cart 🌸')">
+      <div class="mimg mi1"><span>👕</span><span class="mbadge">✦ Limited</span></div>
+      <div class="minfo"><div class="mname">BLOOM Tee</div><div class="mprice">£28.00</div><button class="madd">Add to Cart</button></div>
+    </div>
+    <div class="mcard reveal" style="transition-delay:.1s" onclick="showToast('Added to cart 🌿')">
+      <div class="mimg mi2"><span>🧥</span><span class="mbadge">New</span></div>
+      <div class="minfo"><div class="mname">FLOURISH Hoodie</div><div class="mprice">£55.00</div><button class="madd">Add to Cart</button></div>
+    </div>
+    <div class="mcard reveal" style="transition-delay:.2s" onclick="showToast('Added to cart 🔥')">
+      <div class="mimg mi3"><span>🧢</span></div>
+      <div class="minfo"><div class="mname">JAM Cap</div><div class="mprice">£22.00</div><button class="madd">Add to Cart</button></div>
+    </div>
+    <div class="mcard reveal" style="transition-delay:.3s" onclick="showToast('Added to cart 📓')">
+      <div class="mimg mi4"><span>📓</span><span class="mbadge">✦ Limited</span></div>
+      <div class="minfo"><div class="mname">Pink Biscuit Journal</div><div class="mprice">£16.00</div><button class="madd">Add to Cart</button></div>
+    </div>
+    <div class="mcard reveal" style="transition-delay:.4s" onclick="showToast('Added to cart 🛍')">
+      <div class="mimg mi5"><span>🛍</span></div>
+      <div class="minfo"><div class="mname">Voidflower Tote</div><div class="mprice">£18.00</div><button class="madd">Add to Cart</button></div>
+    </div>
+    <div class="mcard reveal" style="transition-delay:.5s" onclick="showToast('Added to cart 🖼')">
+      <div class="mimg mi6"><span>🖼</span><span class="mbadge">Art Print</span></div>
+      <div class="minfo"><div class="mname">Trilogy Print Set</div><div class="mprice">£38.00</div><button class="madd">Add to Cart</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fb">
+    <div class="fa">EMERSØN</div>
+    <div class="fe">The Pink Biscuit Experience</div>
+    <div class="fl">Voidflower Recordings · Hermit &amp; Baker Co.</div>
+  </div>
+  <div class="fc">✦</div>
+  <div class="fr">
+    <a href="#">Instagram</a>
+    <a href="#">Spotify</a>
+    <a href="#">Apple Music</a>
+    <a href="#">TikTok</a>
+    <a href="#">Contact</a>
+  </div>
+  <div class="fcopy">© 2025 EMERSØN · The Pink Biscuit Experience · Voidflower Recordings · All rights reserved</div>
+</footer>
+
+<!-- PLAYER BAR -->
+<div id="player-bar">
+  <div class="p-info">
+    <span class="p-ep" id="pEP">— — —</span>
+    <span class="p-name" id="pName">Select a track to play</span>
+  </div>
+  <div class="p-ctrls">
+    <button class="cbtn" onclick="prevTrack()">⏮</button>
+    <button class="playbtn" id="playBtn" onclick="togglePlay()">▶</button>
+    <button class="cbtn" onclick="nextTrack()">⏭</button>
+  </div>
+  <div class="p-prog-wrap">
+    <input type="range" class="p-prog" id="pBar" min="0" max="100" value="0" oninput="seekTo(this.value)">
+    <div class="p-time"><span id="pCur">0:00</span><span id="pDur">--:--</span></div>
+  </div>
+  <div class="p-vol-wrap">
+    <span class="p-vol-icon">🔊</span>
+    <input type="range" class="p-vol" id="vBar" min="0" max="1" step="0.05" value="0.8" oninput="setVol(this.value)">
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// CURSOR
+const cur=document.getElementById('cursor'),ctr=document.getElementById('ctrail');
+let mx=0,my=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.transform=`translate(${mx}px,${my}px) translate(-50%,-50%)`;
+  setTimeout(()=>{ctr.style.transform=`translate(${mx}px,${my}px) translate(-50%,-50%)`;},90);
+});
+document.querySelectorAll('a,button,.trow,.jcard,.mcard,.obtn').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='34px';cur.style.height='34px';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='18px';cur.style.height='18px';});
+});
+
+// PARTICLES
+const cv=document.getElementById('ptx'),ctx=cv.getContext('2d');
+cv.width=window.innerWidth;cv.height=window.innerHeight;
+window.addEventListener('resize',()=>{cv.width=window.innerWidth;cv.height=window.innerHeight;});
+const PC=['#f4a7c3','#c9a8e8','#b6f0a0','#f0d060','#a8c8f7','#e8619a'];
+const PS=Array.from({length:52},()=>({
+  x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight+window.innerHeight,
+  r:Math.random()*2.3+.6,s:Math.random()*.65+.2,c:PC[Math.floor(Math.random()*PC.length)],
+  o:Math.random()*.4+.12,w:Math.random()*Math.PI*2,ws:Math.random()*.02+.007,
+}));
+(function ap(){
+  ctx.clearRect(0,0,cv.width,cv.height);
+  PS.forEach(p=>{
+    p.y-=p.s;p.w+=p.ws;p.x+=Math.sin(p.w)*.35;
+    if(p.y<-8){p.y=cv.height+8;p.x=Math.random()*cv.width;}
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=p.c;ctx.globalAlpha=p.o;ctx.fill();
+  });ctx.globalAlpha=1;requestAnimationFrame(ap);
+})();
+
+// SCROLL REVEAL
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+const BASE='https://bobomjongo.github.io/pink-biscuit-audio';
+const TRACKS=[
+  {name:'Excusez Moi',            ep:'BLOOM',    emoji:'🌸', src:`${BASE}/excusez-moi.mp3`},
+  {name:'Angelina',               ep:'BLOOM',    emoji:'🌸', src:`${BASE}/angelina.mp3`},
+  {name:'Love Is Coming For You', ep:'BLOOM',    emoji:'🌸', src:`${BASE}/love-is-coming-for-you.mp3`},
+  {name:'Go Come',                ep:'FLOURISH', emoji:'🌿', src:`${BASE}/go-come.mp3`},
+  {name:'Overtime',               ep:'FLOURISH', emoji:'🌿', src:`${BASE}/overtime.mp3`},
+  {name:'Abeni',                  ep:'FLOURISH', emoji:'🌿', src:`${BASE}/abeni.mp3`},
+  {name:'Get My Body',            ep:'JAM',      emoji:'🔥', src:`${BASE}/get-my-body.mp3`},
+  {name:'Good Summer',            ep:'JAM',      emoji:'🔥', src:`${BASE}/good-summer.mp3`},
+  {name:'Joseline',               ep:'JAM',      emoji:'🔥', src:`${BASE}/joseline.mp3`},
+];
+
+let audio=null, cIdx=-1, playing=false;
+
+function playTrack(idx){
+  // Stop current
+  if(audio){audio.pause();audio.src='';audio=null;}
+  playing=false;
+
+  // Update row UI
+  document.querySelectorAll('.trow').forEach((r,i)=>{
+    r.classList.toggle('playing', i===idx);
+    r.querySelector('.tpicon').textContent='▶';
+  });
+
+  const t=TRACKS[idx];
+  cIdx=idx;
+
+  // Update player bar
+  document.getElementById('pEP').textContent=t.ep;
+  document.getElementById('pName').textContent=t.name;
+  document.getElementById('pBar').value=0;
+  document.getElementById('pBar').style.setProperty('--pv','0%');
+  document.getElementById('pCur').textContent='0:00';
+  document.getElementById('pDur').textContent='--:--';
+
+  // Load & play
+  audio=new Audio(t.src);
+  audio.volume=parseFloat(document.getElementById('vBar').value);
+  audio.play().then(()=>{
+    playing=true;
+    document.getElementById('playBtn').textContent='⏸';
+    document.querySelectorAll('.trow')[idx].querySelector('.tpicon').textContent='⏸';
+  }).catch(()=>{
+    showToast('⚠️ Enable file sharing on Google Drive for this track');
+  });
+  audio.addEventListener('timeupdate', updProg);
+  audio.addEventListener('ended', ()=>nextTrack());
+  audio.addEventListener('loadedmetadata',()=>{
+    document.getElementById('pDur').textContent=fmt(Math.floor(audio.duration));
+  });
+}
+
+function togglePlay(){
+  if(cIdx<0){playTrack(0);return;}
+  if(playing){
+    audio&&audio.pause();
+    playing=false;
+    document.getElementById('playBtn').textContent='▶';
+    document.querySelectorAll('.trow')[cIdx].querySelector('.tpicon').textContent='▶';
+  } else {
+    audio&&audio.play();
+    playing=true;
+    document.getElementById('playBtn').textContent='⏸';
+    document.querySelectorAll('.trow')[cIdx].querySelector('.tpicon').textContent='⏸';
+  }
+}
+
+function nextTrack(){playTrack((cIdx+1)%TRACKS.length);}
+function prevTrack(){playTrack((cIdx-1+TRACKS.length)%TRACKS.length);}
+
+function seekTo(v){
+  const b=document.getElementById('pBar');
+  b.style.setProperty('--pv',v+'%');
+  if(audio&&audio.duration)audio.currentTime=(v/100)*audio.duration;
+}
+function setVol(v){if(audio)audio.volume=v;}
+
+function updProg(){
+  if(!audio)return;
+  const pct=(audio.currentTime/audio.duration)*100||0;
+  const b=document.getElementById('pBar');
+  b.value=pct;b.style.setProperty('--pv',pct+'%');
+  document.getElementById('pCur').textContent=fmt(Math.floor(audio.currentTime));
+}
+function fmt(s){return`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;}
+
+// ORACLE
+const OQ=[
+  {q:"Close your eyes. What does right now feel like in your body?",opts:["🌱 Like something is about to open","🔥 Like I'm running at full speed","🌊 Still. Soft. Floating.","🌸 Tender. A little raw."]},
+  {q:"Your ideal Sunday afternoon is...",opts:["🌅 Slow mornings & journaling","🎶 Dancing alone in your room","🌿 Something is shifting quietly","💜 Deep conversations until late"]},
+  {q:"What are you secretly growing toward?",opts:["🪴 A newer version of yourself","🌀 Something you can't name yet","⚡ Unleashing something held back","🌸 Coming home to who you are"]},
+  {q:"Pick the word that vibrates for you right now:",opts:["🌱 Beginning","🌿 Becoming","🔥 Breaking free","🌸 Returning"]},
+];
+const OR={
+  A:{em:'🌸',ep:'✦ Volume One',t:'BLOOM is calling you',d:"You're at the tender beginning of something. Let BLOOM hold your unfolding — Excusez Moi, Angelina, Love Is Coming For You were written for exactly where you are."},
+  B:{em:'🌿',ep:'✦ Volume Two',t:'FLOURISH is your energy',d:"You're mid-motion, growing in real time. Go Come, Overtime, Abeni — this is the soundtrack to your becoming. Keep moving."},
+  C:{em:'🔥',ep:'✦ Volume Three',t:'JAM is your frequency',d:"You've built up to this. Time to let go, take up space, feel the full joy of being alive. Get My Body, Good Summer, Joseline are waiting for you."},
+  D:{em:'💜',ep:'✦ The Full Trilogy',t:'All three EPs are yours',d:"You're in the complete arc right now. Start from the beginning and let the full Pink Biscuit Experience wash through you."},
+};
+let oCur=0,oAnsList=[];
+function oAns(qi,a){
+  oAnsList.push(a);document.getElementById('od'+qi).classList.add('done');oCur++;
+  if(oCur<OQ.length){
+    const nq=OQ[oCur],qEl=document.getElementById('oQ');
+    qEl.style.opacity=0;
+    setTimeout(()=>{
+      qEl.textContent=nq.q;qEl.style.opacity=1;
+      document.getElementById('oOpts').innerHTML=nq.opts.map((o,i)=>`<button class="obtn" onclick="oAns(${oCur},'${String.fromCharCode(65+i)}')">${o}</button>`).join('');
+    },300);
+  } else {
+    const cnt={};oAnsList.forEach(a=>cnt[a]=(cnt[a]||0)+1);
+    const dom=Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0][0];
+    const r=OR[dom]||OR.D;
+    document.getElementById('oOpts').style.display='none';
+    document.getElementById('oQ').style.display='none';
+    const res=document.getElementById('oRes');
+    document.getElementById('rEm').textContent=r.em;
+    document.getElementById('rEP').textContent=r.ep;
+    document.getElementById('rT').textContent=r.t;
+    document.getElementById('rD').textContent=r.d;
+    res.classList.add('show');
+  }
+}
+function resetOracle(){
+  oCur=0;oAnsList=[];
+  document.querySelectorAll('.odot').forEach(d=>d.classList.remove('done'));
+  document.getElementById('oOpts').style.display='grid';
+  document.getElementById('oQ').style.display='block';
+  document.getElementById('oRes').classList.remove('show');
+  document.getElementById('oQ').textContent=OQ[0].q;
+  document.getElementById('oOpts').innerHTML=OQ[0].opts.map((o,i)=>`<button class="obtn" onclick="oAns(0,'${String.fromCharCode(65+i)}')">${o}</button>`).join('');
+}
+
+// JOURNAL DATA
+const JD=[
+  {date:'Studio Session — January 2025',type:'photo',badge:'bp',label:'📸 Photo',title:'The room where BLOOM was born',img:'🕯️',sub:'Studio, Lagos · Jan 2025',body:"Three candles, one microphone, and the feeling that something was listening back.\n\nI set up in the corner of the room with the cracked window — the one that lets in just enough street sound to remember that the world is still turning while you're making something private.\n\nBLOOM started in that room. All of it. The guitar part on Angelina. The whispered intro on Excusez Moi. The final line of Love Is Coming — I cried saying it into the mic and kept the take.\n\nI want people to feel that room when they press play."},
+  {date:'Voice Note Transcribed — November 14, 2024 · 2:47am',type:'idea',badge:'bi',label:'💡 Idea',title:'What if the funk was the grief',body:"I keep coming back to this — what if the reason Afrobeat makes you want to move is because it was made by people who had to keep moving?\n\nWhat if the groove is the grief, sublimated. Transmuted. What if dancing is how you process what you can't say in words?\n\nThis is what I want the Pink Biscuit Experience to do. I want to make music that sounds like joy but contains something much more complex underneath. Like the best meals. Like the best laughter.\n\nFunk is not escapism. Funk is survival with style."},
+  {date:'Writing — December 2024 · midnight',type:'writing',badge:'bw',label:'✍️ Writing',title:'On naming songs after women',body:"Angelina. Abeni. Joseline.\n\nThere's something about putting a name in a song — it becomes a kind of prayer. You're asking the universe: have you seen her? Do you know her? I want you to know her.\n\nBut they're not just people. They're frequencies. Angelina is softness with spine. Abeni means 'we asked for her and she came.' Joseline is the one who arrived and changed everything.\n\nThese women live in the music. I hope they find the people they were sent for."},
+  {date:'Visual Reference — February 2025',type:'photo',badge:'bp',label:'📸 Photo',title:'Mood board for FLOURISH',img:'🌿',sub:'Reference Images · Feb 2025',body:"Fractals. Bougainvillea in Lagos light. The feeling of a Friday at 6pm when everything is still possible.\n\nFLOURISH is about growth that doesn't ask permission. It's mid-motion, alive, full of itself in the best way.\n\nThe visual reference: coral walls, green leaves against hot sky, market fabric, sweat and sequins.\n\nGo Come is the chase. Overtime is refusing to stop when they tell you to. Abeni is the arrival.\n\nI want FLOURISH to feel like humidity — heavy with possibility."},
+  {date:'Concept Note — January 2025',type:'idea',badge:'bi',label:'💡 Idea',title:'The biscuit as metaphor',body:"Something that crumbles when you hold too tight. Something that's best shared. Something that surprises you with how much warmth it holds.\n\nPink — soft, intimate, the colour of something interior made external.\n\nBiscuit — humble, everyday, deeply comforting. Nothing pretentious about a biscuit. And yet — the right biscuit, at the right moment, is everything.\n\nThe Pink Biscuit Experience is not trying to be grand. It's trying to be necessary. The thing you reach for when you need comfort. The thing that turns out to be more complex than you expected.\n\nThat's EMERSØN. That's this."},
+  {date:'Writing — March 2025',type:'writing',badge:'bw',label:'✍️ Writing',title:'What JAM means to me',body:"JAM is the version of you that stopped asking for permission to take up space.\n\nGet My Body is the reclamation. Good Summer is the proof that joy is a practice, not a destination. Joseline is the one who got you there.\n\nJAM is the final EP but not a conclusion — it's a threshold. You standing at the edge of who you were and stepping into who you've been becoming across BLOOM and FLOURISH.\n\nI've been building toward JAM for years. Every tender song I've made has been in service of this: the moment you find your way back to your own body. Your own rhythm. Your own joy.\n\nWelcome to JAM."},
+];
+function openJ(idx){
+  const d=JD[idx];
+  document.getElementById('mDate').textContent=d.date;
+  document.getElementById('mBadge').textContent=d.label;
+  document.getElementById('mBadge').className='m-badge '+d.badge;
+  document.getElementById('mTitle').textContent=d.title;
+  const iw=document.getElementById('mImgWrap');
+  if(d.img){
+    iw.style.display='block';
+    document.getElementById('mImg').textContent=d.img;
+    document.getElementById('mSub').textContent=d.sub||'';
+  } else {iw.style.display='none';}
+  document.getElementById('mBody').innerHTML=d.body.split('\n').filter(Boolean).map(p=>`<p>${p}</p>`).join('');
+  document.getElementById('jModal').classList.add('open');
+}
+function closeModal(e){if(e.target===document.getElementById('jModal'))document.getElementById('jModal').classList.remove('open');}
+
+// TOAST
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2300);
+}
+</script>
+</body>
+</html>
